@@ -1,0 +1,249 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Blog RESTful API",
+      "version": "1.0.0",
+      "description": "API documentation for the Blog application"
+    },
+    "paths": {
+      "/api/users/create-user": {
+        "post": {
+          "summary": "Create a new user",
+          "description": "Create a new user with the provided data.",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["username", "email", "password"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "User created successfully."
+            },
+            "400": {
+              "description": "Invalid request data."
+            },
+            "500": {
+              "description": "Internal Server Error."
+            }
+          }
+        }
+      },
+      "/api/users/login-user": {
+        "post": {
+          "summary": "User login",
+          "description": "Authenticate and login a user using provided credentials.",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string"
+                    },
+                    "password": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["email", "password"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "User logged in successfully."
+            },
+            "401": {
+              "description": "Unauthorized: Invalid credentials."
+            },
+            "500": {
+              "description": "Internal Server Error."
+            }
+          }
+        }
+      },
+      "/api/users/user-profile": {
+        "get": {
+          "summary": "Get user profile",
+          "description": "Get the user profile information.",
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "User profile retrieved successfully."
+            },
+            "401": {
+              "description": "Unauthorized: Token not provided or invalid."
+            },
+            "500": {
+              "description": "Internal Server Error."
+            }
+          }
+        }
+      },
+      "/api/users/update-email/{id}": {
+        "put": {
+          "summary": "Update user email",
+          "description": "Update the email of a user with the provided data.",
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "description": "User ID",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "updateEmail": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["updateEmail"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "User email updated successfully."
+            },
+            "401": {
+              "description": "Unauthorized: Token not provided or invalid."
+            },
+            "404": {
+              "description": "Not Found: User not found."
+            },
+            "500": {
+              "description": "Internal Server Error."
+            }
+          }
+        }
+      },
+      "/api/users/update-password/{id}": {
+        "put": {
+          "summary": "Update user password",
+          "description": "Update the password of a user with the provided data.",
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "description": "User ID",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "updatePassword": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["updatePassword"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "User password updated successfully."
+            },
+            "401": {
+              "description": "Unauthorized: Token not provided or invalid."
+            },
+            "404": {
+              "description": "Not Found: User not found."
+            },
+            "500": {
+              "description": "Internal Server Error."
+            }
+          }
+        }
+      },
+      "/api/users/delete-user/{id}": {
+        "delete": {
+          "summary": "Delete user",
+          "description": "Delete a user by their ID.",
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "description": "User ID",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "User deleted successfully."
+            },
+            "401": {
+              "description": "Unauthorized: Token not provided or invalid."
+            },
+            "404": {
+              "description": "Not Found: User not found."
+            },
+            "500": {
+              "description": "Internal Server Error."
+            }
+          }
+        }
+      }
+    },
+  "components": {},
+  "tags": []
+}

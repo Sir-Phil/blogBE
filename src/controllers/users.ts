@@ -2,6 +2,8 @@ import asyncHandler from "express-async-handler";
 import User from "../Models/user";
 import { Request, Response } from "express";
 import { IUserRequest } from "../Interfaces/user";
+import isValidEmail from "../helper/validation";
+import bcrypt from "bcrypt";
 
 const createUser = asyncHandler (async (req:Request, res: Response) => {
    try {
@@ -88,20 +90,21 @@ const updateUser = asyncHandler(async(req:IUserRequest, res: Response) => {
         const userId = req.params.id;
     const {updateEmail, updateUsername, updatePassword} = req.body;
 
-    const user = await User.findByPk(userId)!;
+    const user = await User.findByPk(userId);
 
     if(!user){
         res.status(404).json({message: "User not found"});
     }
-
-    if(updateEmail !== undefined){
-        user!.email = updateEmail;
-    }
-    if(updateUsername !== undefined){
-        user!.email = updateUsername;
-    }
-    if(updatePassword !== undefined){
-        user!.email = updatePassword;
+    if(user){
+        if(updateEmail !== undefined){
+            user.email = updateEmail;
+        }
+        if(updateUsername !== undefined){
+            user.email = updateUsername;
+        }
+        if(updatePassword !== undefined){
+            user.email = updatePassword;
+        }
     }
     
     await user?.save()
@@ -113,11 +116,63 @@ const updateUser = asyncHandler(async(req:IUserRequest, res: Response) => {
     }
 })
 
+const updateUserEmail = asyncHandler (async (req: IUserRequest, res: Response, ) => {
+try {
+    const userId = req.params.id;
+    const {updateEmail} = req.body;
+
+    const user = await User.findOne({where: {id: userId}});
+
+    if(!user){
+        res.status(404).json({message: "User not found"});
+    }
+
+    if(updateEmail !== undefined){
+        if(!isValidEmail (updateEmail)){
+            res.status(400).json({message: "Invalid Email Format"})
+        }
+
+        user?.set("email", updateEmail);
+        await user?.save();
+    }
+    res.status(200).json({ message: "User email updated successfully" });
+} catch (error) {
+    console.error("Error updating user email:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+}
+});
+
+const updateUserPassword = asyncHandler (async (req: IUserRequest, res: Response) => {
+try {
+    const userId = req.params.id;
+    const {updatePassword} = req.body;
+
+    const user = await User.findOne({where: {id: userId}});
+
+    if(!user) {
+        res.status(404).json({message: "User not found"});
+    }
+
+    if(updatePassword !== undefined){
+        const hashPassword = await bcrypt.hash(updatePassword, 10);
+        user?.set("password", hashPassword);
+        await user?.save()
+    }
+    res.status(200).json({ message: "User password updated successfully" });
+} catch (error) {
+    console.error("Error updating user password:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+}
+})
+
+
 export {
     createUser,
     userLogin,
     loadUser,
     deleteUser,
     updateUser,
+    updateUserEmail,
+    updateUserPassword
 
 }

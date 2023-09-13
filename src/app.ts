@@ -3,12 +3,14 @@ import cors from "cors";
 import bodyParser from "body-parser"
 import dotenv from "dotenv";
 import cookiesParser from "cookie-parser";
+import swaggerUi from "swagger-ui-express"
 
 
 
 //Routers
 import { errorHandler, notFound } from "./Middleware/errorHandle";
 import userRoutes from "./routes/userRoutes";
+import swaggerSpec from "./swaggerUI/swagger.json";
 
 
 dotenv.config()
@@ -34,6 +36,8 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
 app.use(bodyParser.json());
 app.use(express.json());
 
+//swagger UI
+app.use("/api-doc", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 //api Routes
 app.use("/api/users", userRoutes);
