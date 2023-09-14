@@ -1,6 +1,7 @@
 import * as dotenv from "dotenv";
 import { sequelize } from "./Database/db_config";
 import app from "./app";
+import http from "http"
 
 dotenv.config();
 
@@ -10,13 +11,15 @@ process.on('uncaughtException', (err) => {
     process.exit(1);
 });
 
+const httpServer = http.createServer(app)
+
 //connection to database 
 sequelize
     .sync()
     .then(() => {
         console.log('Connected to the database');
         // starting the express app
-        app.listen(process.env.PORT, () => {
+        httpServer.listen(process.env.PORT, () => {
             console.log(`Server is running on http://localhost:${process.env.PORT}`);
         });
     })

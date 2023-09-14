@@ -5,6 +5,20 @@
       "version": "1.0.0",
       "description": "API documentation for the Blog application"
     },
+    "components": {
+        "securitySchemes": {
+          "bearerAuth": {
+            "type": "http",
+            "scheme": "bearer",
+            "bearerFormat": "JWT"
+          }
+        }
+      },
+      "security": [
+        {
+          "bearerAuth": []
+        }
+      ],
     "paths": {
       "/api/users/create-user": {
         "post": {
@@ -244,6 +258,5 @@
         }
       }
     },
-  "components": {},
   "tags": []
 }

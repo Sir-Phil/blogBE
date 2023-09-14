@@ -36,8 +36,18 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
 app.use(bodyParser.json());
 app.use(express.json());
 
+const customCss = `
+  .swagger-ui .topbar .download-url-wrapper .download-url-input {
+    width: 200px;
+  }
+`;
+
+const customOptions = {
+  customCss, // You can customize the CSS
+  customSiteTitle: 'Blogger Signup', // Customize the Header text
+};
 //swagger UI
-app.use("/api-doc", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use("/api-doc", swaggerUi.serve, swaggerUi.setup(swaggerSpec, customOptions));
 
 //api Routes
 app.use("/api/users", userRoutes);
