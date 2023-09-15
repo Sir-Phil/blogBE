@@ -32,4 +32,4 @@ import app from "./src/app";
 
 
 // Export the handler
-module.exports.hello = serverless(app);
+module.exports.blogapi = serverless(app);
