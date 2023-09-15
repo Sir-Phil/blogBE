@@ -35,12 +35,14 @@
     "mysql2": "^3.6.0",
     "nodemon": "^3.0.1",
     "rimraf": "^5.0.1",
+    "serverless": "^3.34.0",
     "serverless-http": "^3.2.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   },
   "dependencies": {
     "@types/sequelize": "^4.28.15",
+    "aws-serverless-express": "^3.4.0",
     "sequelize": "^6.33.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0"
